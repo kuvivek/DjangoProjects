@@ -531,6 +531,7 @@ admin.site.register(Movie)
 
 Once the Movie model is registered, then Create a super user.
 
+```
 (MyMDB) [kuvivek@vivekcentos django]$ 
 (MyMDB) [kuvivek@vivekcentos django]$ python manage.py createsuperuser
 Username (leave blank to use 'kuvivek'): 
@@ -549,3 +550,4 @@ Django version 2.0.13, using settings 'config.settings'
 Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 
+```
