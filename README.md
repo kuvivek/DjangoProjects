@@ -513,3 +513,39 @@ To get Django's admin app working with our models, we will perform the following
   2. Create a super user who can access the backend
   3. Run the development server
   4. Access the backend in a browser
+
+Registering Movie Model with the admin by editing `django/core/admin.py` file.
+
+```
+(MyMDB) [kuvivek@vivekcentos DjangoProjects]$ cat django/core/admin.py 
+from django.contrib import admin
+
+# Register your models here.
+
+from core.models import Movie
+
+admin.site.register(Movie)
+(MyMDB) [kuvivek@vivekcentos DjangoProjects]$ 
+
+```
+
+Once the Movie model is registered, then Create a super user.
+
+(MyMDB) [kuvivek@vivekcentos django]$ 
+(MyMDB) [kuvivek@vivekcentos django]$ python manage.py createsuperuser
+Username (leave blank to use 'kuvivek'): 
+Email address: vivekkumar.bitsindri@gmail.com
+Password: 
+Password (again): 
+Superuser created successfully.
+(MyMDB) [kuvivek@vivekcentos django]$ 
+(MyMDB) [kuvivek@vivekcentos django]$ 
+(MyMDB) [kuvivek@vivekcentos django]$ python manage.py runserver
+Performing system checks...
+
+System check identified no issues (0 silenced).
+September 22, 2019 - 21:47:05
+Django version 2.0.13, using settings 'config.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+
