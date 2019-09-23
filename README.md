@@ -549,5 +549,86 @@ September 22, 2019 - 21:47:05
 Django version 2.0.13, using settings 'config.settings'
 Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
+```
+
+
+15. Creating MovieList view
+When Django gets a request, it uses the path of the request and the `URLConf` of the project
+to match a request to a view, which returns an HTTP response. Django's views can be either
+functions, often referred to as Function-Based Views (FBVs), or classes, often called Class-
+Based Views (CBVs). The advantage of CBVs is that Django comes with a rich suite of generic 
+views that you can subclass to easily (almost declaratively) write views to accomplish common
+tasks.
+
+Let's write a view to list the movies that we have. Open `django/core/views.py` and
+change it to the following:
 
 ```
+(MyMDB) [kuvivek@vivekcentos DjangoProjects]$ 
+(MyMDB) [kuvivek@vivekcentos DjangoProjects]$ cat django/core/views.py 
+from django.shortcuts import render
+
+# Create your views here.
+from django.views.generic import ListView
+
+from core.models import Movie
+
+class MovieList(ListView):
+
+    # ListView requires atleast a model attribute, Hence added the same below.
+    # It will query for all the rows of that model, pass it to the template
+    # and returned the rendered template in a response.
+    model = Movie
+
+(MyMDB) [kuvivek@vivekcentos DjangoProjects]$ 
+
+```
+
+`ListView` requires at least a `model` attribute. It will query for all the rows of that model,
+pass it to the template, and return the rendered template in a response. It also offers a
+number of hooks that we may use to replace default behavior.
+
+How does `ListView` know how to query all the objects in `Movie`? For that, we will need to
+discuss manager and `QuerySet` classes. Every model has a default manager. Manager classes are 
+primarily used to query objects by offering methods, such as `all()`, that return a `QuerySet`. 
+A `QuerySet` class is Django's representation of a query to the database. `QuerySet` has a 
+number of methods, including `filter()` (such as a 'WHERE' clause in a 'SELECT' statement) to
+limit a result. One of the nice features of the `QuerySet` class is that it is lazy; it is not
+evaluated until we try to get a model out of the `QuerySet`. Another nice feature is that 
+methods such as `filter()` take lookup expressions, which can be field names or span across
+relationship models.
+
+So, how does `ListView` know that it has to query all the objects in `Movie`? `ListView`
+checks whether it has a `model` attribute, and, if present, knows that `Model` classes have a
+default manager with a `all()` method, which it calls. `ListView` also gives us a convention
+for where to put our template, as follows: `<app_name><model_name>_list.html`.
+
+16. Adding our first template - movie_list.html
+
+Django ships with its own template language called the Django Template language.
+Django can also use other template languages (for example, Jinja2), but most Django
+projects find using the Django Template language to be efficient and convenient.
+In the default configuration that is generated in our `settings.py` file, the Django Template
+language is configured to use "APP_DIRS" , meaning that each Django app can have a
+`templates` directory, which will be searched to find a template. This can be used to
+override templates that other apps use without having to modify the third-party apps
+themselves.
+
+Let's make our first template in `django/core/templates/core/movie_list.html`.
+
+The final step will be to connect our view to a `URLConf`.
+
+
+17. Routing requests to our view with URLConf
+
+Now that we have a model, view, and template, we will need to tell Django which requests
+it should route to our `MovieList` View using a URLConf. Each new project has a root
+URLConf that created by Django (in our case it's the `django/config/urls.py` file).
+Django developers have developed the best practice of each app having its own URLConf.
+Then, the root URLConf of a project will include each app's URLConf using the `include()`
+function.
+
+create a URLConf for our core app by creating a `django/config/urls.py` file.
+And then connect our `URLConf` to the root `URLConf` by changing `django/config/urls.py`.
+
+

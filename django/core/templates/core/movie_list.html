@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <ul>
+      {% for movie in object_list %}
+        <li>{{ movie }}</li>
+      {% empty %}
+        <li> No Movies yet.</li>
+      {% endfor %}
+    </ul>
+    <p>
+      Using https?
+      {{ request.is_secure|yesno }}
+    </p>    
+  </body>
+</html>
