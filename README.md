@@ -631,4 +631,208 @@ function.
 create a URLConf for our core app by creating a `django/config/urls.py` file.
 And then connect our `URLConf` to the root `URLConf` by changing `django/config/urls.py`.
 
+18. Creation of Individual movie page
+
+To add movie details following things are required.
+  
+  1. Create a movie detail view
+  2. Create a movie_detail.html template
+  3. Reference to our MovieDetail view in our URLConf
+
+
+  18.1 Django provides DetailView class that we can subclass to create a view showing the details of single 
+       Model.   
+   
+  Create view in django/core/views.py
+
+```   
+@@ -1,7 +1,7 @@
+ from django.shortcuts import render
+ 
+ # Create your views here.
+-from django.views.generic import ListView
++from django.views.generic import ListView, DetailView
+ 
+ from core.models import Movie
+ 
+@@ -12,3 +12,5 @@ class MovieList(ListView):
+     # and returned the rendered template in a response.
+     model = Movie
+ 
++class MovieList(DetailView):
++    model = Movie
+(MyMDB) [kuvivek@vivekcentos DjangoProjects]$ 
+
+```   
+   18.2 Create movie_detail.html template
+
+Django's Template language supports template inheritance, which means that you can write
+a template with all the look and feel for our website and mark the `block` sections that
+other templates will override. This allows to create the look and feel of the entire website
+without having to edit each template. Creating a base template with MyMDBb's branding and
+look and feel and then add a Movie Detail template that inherits from the
+base template.
+
+A base template shouldn't be tied to a particular app, so let's make a general templates
+directory:
+
+ `$ mkdir django/templates`
+
+Django doesn't know to check our `templates` directory yet, so we will need to update the
+configuration in our `settings.py` file. Find the line that starts with `TEMPLATES` and
+change the configuration to list our `templates` directory in the `DIRS` list:
+
+```   
+@@ -55,7 +55,9 @@ ROOT_URLCONF = 'config.urls'
+ TEMPLATES = [
+     {
+         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+-        'DIRS': [],
++        'DIRS': [
++           os.path.join(BASE_DIR, 'templates'),
++        ],
+         'APP_DIRS': True,
+         'OPTIONS': {
+             'context_processors': [
+
+```   
+
+Let's create a base template in django/templates/base.html that has a main column and sidebar.
+
+```   
+<!DOCTYPE html>
+<html lang="en" >
+<head >
+  <meta charset="UTF-8" >
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  >
+  <link
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+    integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+    rel="stylesheet"
+    crossorigin="anonymous"
+  >
+  <title >
+    {% block title %}MyMDB{% endblock %}
+  </title>
+  <style>
+    .mymdb-masthead {
+      background-color: #EEEEEE;
+      margin-bottom: 1em;
+    }
+  </style>
+
+</head >
+<body >
+<div class="mymdb-masthead">
+  <div class="container">
+    <nav class="nav">
+      <div class="navbar-brand">MyMDB</div>
+      <a
+        class="nav-link"
+        href="{% url 'core:MovieList' %}"
+      >
+        Movies
+      </a>
+    </nav>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8 mymdb-main">
+     {% block main %}{% endblock %}
+    </div>
+    <div
+        class="col-sm-3 offset-sm-1 mymdb-sidebar"
+    >
+      {% block sidebar %}{% endblock %}
+    </div>
+  </div>
+</div>
+
+</body >
+</html >
+
+```   
+
+Most of this HTML is actually bootstrap (HTML/CSS framework) boilerplate, but we do
+have a few new Django tags:
+`{% block title %}MyMDB{% endblock %}` : This creates a block that other templates 
+can replace. If the block is not replaced, the contents from the parent template will 
+be used.
+
+
+href="{% url 'core:MovieList' %}" : The `url` tag will produce a URL path
+for the named `path` . URL names should be referenced as `<app_namespace>:<name>`; in our 
+case, `core` is the namespace of the core app (per `django/core/urls.py`), and `MovieList` 
+is the name of the MovieList view's URL.
+
+This lets us create a simple template in `django/core/templates/core/movie_detail.html`
+
+```   
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ object.title }} - {{ block.super }}
+{% endblock %}
+
+{% block main %}
+<h1>{{ object }}</h1>
+<p class="lead">
+{{ object.plot }}
+</p>
+{% endblock %}
+
+{% block sidebar %}
+<div>
+This movie is rated:
+  <span class="badge badge-primary">
+  {{ object.get_rating_display }}
+  </span>
+</div>
+{% endblock %}
+
+```   
+
+Let's take a look at some new tags:
+
+`{% extends 'base.html' %}` : If a template wants to extend another template
+the first line must be an `extends` tag. Django will look for the base template
+(which can `extend` another template) and execute it first, then replace the blocks.
+A template that extends another cannot have content outside of blocks because
+it's ambiguous where to put that content.
+
+`{{ object.title }} - {{ block.super }}` : We reference `block.super`
+inside the `title` template block. `block.super` returns the contents of the
+`title` template `block` in the base template.
+
+`{{ object.get_rating_display }}` : The Django Template language doesn't
+use () to execute the method, just referencing it by name will execute the
+method.
+
+ 18.3 Adding MovieDetail to core/urls.py 
+
+```
+@@ -6,5 +6,6 @@ app_name = 'core'
+ 
+ urlpatterns = [
+   path('movies', views.MovieList.as_view(), name='MovieList'),
++  path('movies/<int:pk>', views.MovieDetail.as_view(), name='MovieDetail'),
+ 
+ ]
+
+```
+The `MovieDetail` and `MovieList` both calls `path()` which look almost the same, except 
+for the `MovieDetail` string that has a named parameter. A path route string can include angle
+brackets to give a parameter a name and even define a type that the parameter's content must 
+conform to (for example, int:pk will only match values that parse as an int ). These named 
+sections are captured by Django and passed to the view by name. DetailView expects a pk	(or slug) 
+argument and uses it to get the correct row from the database.
+
+A slug is a short URL-friendly label that is often used in content-heavy sites, as it
+is SEO friendly.
+
 

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from core.models import Movie
 
@@ -12,3 +12,5 @@ class MovieList(ListView):
     # and returned the rendered template in a response.
     model = Movie
 
+class MovieList(DetailView):
+    model = Movie
