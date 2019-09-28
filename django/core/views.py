@@ -12,5 +12,5 @@ class MovieList(ListView):
     # and returned the rendered template in a response.
     model = Movie
 
-class MovieList(DetailView):
+class MovieDetail(DetailView):
     model = Movie

@@ -659,7 +659,7 @@ To add movie details following things are required.
      # and returned the rendered template in a response.
      model = Movie
  
-+class MovieList(DetailView):
++class MovieDetail(DetailView):
 +    model = Movie
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$ 
 
