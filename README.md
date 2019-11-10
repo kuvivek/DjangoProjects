@@ -1102,6 +1102,7 @@ don't need to worry about deleting any models we added.
 
 To run the tests, we can use `manage.py`.
 
+```
 (MyMDB) [kuvivek@vivekcentos django]$ python manage.py test
 Creating test database for alias 'default'...
 System check identified no issues (0 silenced).
@@ -1120,6 +1121,7 @@ Ran 1 test in 0.031s
 FAILED (failures=1)
 Destroying test database for alias 'default'...
 (MyMDB) [kuvivek@vivekcentos django]$ 
+```
 
 It failed. May be in one page all the movie details are able to adjust. In order to simulate the pagination, Lets force the list view to display two movies per page.
 In order to achieve the same. Lets add the following attribute in the class MovieList
@@ -1143,7 +1145,7 @@ index ae76eb3..6e4d832 100644
 ```
 
 Running the test once again.
-
+```
 (MyMDB) [kuvivek@vivekcentos django]$ 
 (MyMDB) [kuvivek@vivekcentos django]$ python manage.py test
 Creating test database for alias 'default'...
@@ -1155,6 +1157,7 @@ Ran 1 test in 0.047s
 OK
 Destroying test database for alias 'default'...
 (MyMDB) [kuvivek@vivekcentos django]$
+```
 
 This time it successfully passed.
 
@@ -1176,6 +1179,4 @@ relationship using a through class in a `ManyToManyField`.
    7. Add a `PersonalDetail` view to the list that indicates what movie a Person has directed, written, and performed in.
 
 25. Adding a model with relationships.
-
-
 
