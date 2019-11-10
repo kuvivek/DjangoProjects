@@ -11,6 +11,7 @@ class MovieList(ListView):
     # It will query for all the rows of that model, pass it to the template
     # and returned the rendered template in a response.
     model = Movie
+    paginate_by = 2
 
 class MovieDetail(DetailView):
     model = Movie

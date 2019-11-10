@@ -760,6 +760,7 @@ Let's create a base template in django/templates/base.html that has a main colum
 
 Most of this HTML is actually bootstrap (HTML/CSS framework) boilerplate, but we do
 have a few new Django tags:
+
 `{% block title %}MyMDB{% endblock %}` : This creates a block that other templates 
 can replace. If the block is not replaced, the contents from the parent template will 
 be used.
@@ -825,6 +826,7 @@ method.
  ]
 
 ```
+
 The `MovieDetail` and `MovieList` both calls `path()` which look almost the same, except 
 for the `MovieDetail` string that has a named parameter. A path route string can include angle
 brackets to give a parameter a name and even define a type that the parameter's content must 
@@ -834,5 +836,346 @@ argument and uses it to get the correct row from the database.
 
 A slug is a short URL-friendly label that is often used in content-heavy sites, as it
 is SEO friendly.
+
+
+Let's use `python manage.py runserver` to start the `dev` server and take a 
+look at what our new template looks like:
+
+
+```
+(MyMDB) [kuvivek@vivekcentos django]$ python manage.py runserver
+Performing system checks...
+
+System check identified no issues (0 silenced).
+September 28, 2019 - 22:42:17
+Django version 2.0.13, using settings 'config.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+[28/Sep/2019 22:43:47] "GET /movies HTTP/1.1" 200 210
+[28/Sep/2019 22:44:22] "GET /movies HTTP/1.1" 200 210
+[28/Sep/2019 22:44:27] "GET /movies/1 HTTP/1.1" 200 1263
+[28/Sep/2019 22:44:32] "GET /movies HTTP/1.1" 200 210
+[28/Sep/2019 22:44:37] "GET /movies/2 HTTP/1.1" 200 1271
+[28/Sep/2019 22:44:41] "GET /movies/1 HTTP/1.1" 200 1263
+
+```
+
+19. Pagination and Linking MovieList view to MovieDetail view
+
+Lets add pagination in the `MovieList` view to prevent it from querying the 
+entire database each time.
+
+This needs updation of MovieList.html to extend the base.html.
+
+```
+@@ -1,16 +1,18 @@
+-<!DOCTYPE html>
+-<html>
+-  <body>
+-    <ul>
+-      {% for movie in object_list %}
+-        <li>{{ movie }}</li>
+-      {% empty %}
+-        <li> No Movies yet.</li>
+-      {% endfor %}
+-    </ul>
+-    <p>
+-      Using https?
+-      {{ request.is_secure|yesno }}
+-    </p>    
+-  </body>
+-</html>
++{% extends 'base.html' %}
++
++{% block title %}
++All the Movies
++{% endblock %}
++
++{% block main %}
++<ul>
++  {% for movie in object_list %}
++    <li>
++      <a href="{% url 'core:MovieDetail' pk=movie.id %}">
++        {{ movie }}
++      </a>
++    </li>
++  {% endfor %}
++</ul>
++{% endblock %}
++
+
+```
+
+Here with the `url` tag, the `MovieDetail` URL requires a `pk` argument. 
+If there was no argument provided, then Django would raise a `NoReverseMatch` 
+exception on rendering, resulting in a 500 error.
+
+20. Setting the Page Order.
+
+Another problem with our current view is that it's not ordered. If the database is returning
+an unordered query, then pagination won't help navigation. What's more, there's no 
+guarantee that each time the user changes pages that the content will be consistent, as the
+database may return a differently ordered result set for each time. It is required that the 
+query to be ordered consistently.
+Ordering our model also makes our lives as developers easier too. Whether using a debugger, 
+writing tests, or running a shell ensuring that our models are returned in a consistent order 
+can make troubleshooting simpler. A Django model may optionally have an inner class called `Meta`
+, which lets us specify information about a Model. Let's add a `Meta` class with an `ordering` attribute:
+
+
+```
+@@ -19,6 +19,9 @@ class Movie(models.Model):
+     runtime = models.PositiveIntegerField()
+     website = models.URLField(blank = True)
+ 
++    class Meta:
++        ordering = ('-year', 'title')
++
+     def __str__(self):
+         return '{} ({})'.format(
+             self.title, self.year)
+
+```
+
+`ordering` takes a list or tuple of, usually, strings that are field names, optionally prefixed
+by a `-` character that denotes descending order. ('-year', 'title') is the equivalent of
+the SQL clause `ORDER BY year DESC, title`.
+
+Adding `ordering` to a Model's `Meta` class will mean that `QuerySets` from the model's
+manager will be ordered.
+
+
+21. Adding Pagination
+
+Now that our movies are always ordered the same way, let's add pagination. A Django
+`ListView` already has built-in support for pagination, so all we need to do is take
+advantage of it. Pagination is controlled by the `GET` parameter `page` that controls which
+page to show.
+
+Let's add pagination to the bottom of our `main` template `block` :
+
+Add the below code into the core/templates/core/movie_list.html
+
+```
+{% block main %}
+<ul>
+  {% for movie in object_list %}
+    <li>
+      <a href="{% url 'core:MovieDetail' pk=movie.id %}">{{ movie }}</a>
+    </li>
+  {% endfor %}
+</ul>
+{% if is_paginated %}
+    <nav >
+      <ul class="pagination" >
+        <li class="page-item" >
+          <a href="{% url 'core:MovieList' %}?page=1" class="page-link" >First</a >
+        </li >
+        {% if page_obj.has_previous %}
+          <li class="page-item" >
+            <a href="{% url 'core:MovieList' %}?page={{ page_obj.previous_page_number }}" class="page-link" >{{ page_obj.previous_page_number }}</a >
+          </li >
+        {% endif %}
+        <li class="page-item active" >
+          <a href="{% url 'core:MovieList' %}?page={{ page_obj.number }}" class="page-link" >{{ page_obj.number }}</a >
+        </li >
+        {% if page_obj.has_next %}
+          <li class="page-item" >
+            <a href="{% url 'core:MovieList' %}?page={{ page_obj.next_page_number }}" class="page-link" >{{ page_obj.next_page_number }}</a >
+          </li >
+        {% endif %}
+        <li class="page-item" >
+          <a href="{% url 'core:MovieList' %}?page=last" class="page-link" >Last</a >
+        </li >
+      </ul >
+    </nav >
+{% endif %}
+{% endblock %}
+```
+
+Let's take a look at some important points of our `MovieList` template:
+* `page_obj` is of the `Page` type, which knows information about this page of results. We use it to check whether there is a next/previous page using
+`has_next()` / `has_previous()` (we don't need to put in the Django template language, but `has_next()` is a method, not a property). We also use it to get
+the `next_page_number()`/ `previous_page_number()`. Note that it is important to use the `has_*()`  method to check for the existence of the next/previous page
+numbers before retrieving them. If they don't exist when retrieved, `Page` throws an `EmptyPage` exception.
+
+`object_list` continues to be available and hold the correct values. Even though `page_obj` encapsulates the results for this page in `page_obj.object_list`, 
+`ListView` does the convenient work of ensuring that we can continue to use `object_list` and our template doesn't break.
+
+22. 404 - Error page when the sought URL doesn't exist.
+
+We now have a couple of views that can't function if given the wrong value in the URL (the wrong `pk` will break `MovieDetail`; the wrong `page` will break `MovieList` ); 
+let's plan for that by handling  errors. Django offers a hook in the root URLConf to let us use a custom view for 404 errors (also for 403, 400 , and 500 all following 
+the same names scheme). In your root `urls.py` file, add a variable called `handler404` whose value is a string Python path to your custom view.
+However, we can continue to use the default  handler view and just write a custom template. Let's add a  template in `django/template/404.html`.
+
+Even if another app throws a 404 error, this template will be used.
+
+At the moment, if you've got an unused URL such as `http://localhost:8000/unreal-page`, you won't see our custom 404 template
+because Django's `DEBUG` settings is `True` in `settings.py`. To make our 404 template visible, we will need to change the `DEBUG` and `ALLOWED_HOSTS` settings in `settings.py` :
+   `DEBUG = False`
+   `ALLOWED_HOSTS = [
+      'localhost',
+      '127.0.0.1'
+    ]`
+
+`ALLOWED_HOSTS` is a setting that restricts which `HOST` values in an HTTP request Django will respond to. If `DEBUG` is `False` and a `HOST` does not match an `ALLOWED_HOSTS` value,
+then Django will return a 400 error (you can customize both the view and template for this error as described in the preceding code). 
+
+With the following changes. The customized Page can be tested by putting the following URL in the browser.
+
+`http://127.0.0.1:8000/unreal-page`
+
+23. Testing Views and Templates
+
+The basics of testing is simple. The common XUnit pattern of the `TestCase` classes holding test methods that make assertions.
+
+For Django's TestRunner to find a test, it must be in the `tests` module of an installed app. That means `tests.py`.
+
+Adding the following testcase to perform TDD (Test Driven development).
+  - If there is more than 10 movies, then pagination controls should be rendered in the template.
+  - If there is more than 10 movies and we don't provide `page GET` parameters, consider the following things.
+     - The page_is_last context variable should be False.
+     - The page_is_first context variable should be True.
+     - The first item in the pagination should be marked as active.
+
+
+The following is our test.py file in 
+
+```    
+(MyMDB) [kuvivek@vivekcentos core]$ cat tests.py 
+from django.test import TestCase
+
+# Create your tests here.
+
+from django.test.client import RequestFactory
+from django.urls.base import reverse
+
+from core.models import Movie
+from core.views import MovieList
+
+
+class MovieListPaginationTestCase(TestCase):
+    ACTIVE_PAGINATION_HTML = """
+    <li class="page-item active">
+      <a href="{}?page={}" class="page-link">{}</a>
+    </li>
+    """
+
+    def setUp(self):
+        for n in range(15):
+            Movie.objects.create(title='Title {}'.format(n), year=1990 + n,
+                runtime=100,)
+
+    def testFirstPage(self):
+        movie_list_path = reverse('core:MovieList')
+        request = RequestFactory().get(path=movie_list_path)
+        response = MovieList.as_view()(request)
+        self.assertEqual(200, response.status_code)
+        self.assertTrue(response.context_data['is_paginated'])
+        self.assertInHTML(self.ACTIVE_PAGINATION_HTML.format(
+                movie_list_path, 1, 1),
+            response.rendered_content)
+(MyMDB) [kuvivek@vivekcentos core]$ 
+
+```    
+
+Some interesting points with the TestCases.
+
+  a) `class MovieListPaginationTestCase(TestCase)`: `TestCase` is the base class for all Django tests. It has a number of convenient assert methods.
+
+  b) `def setUp(self)`: Like most XUnit testing frameworks, Django's TestCase
+class offers a `setUp()` hook that is run before each test. A `tearDown()` hook is also available if needed. The database is cleaned up between each test, so we
+don't need to worry about deleting any models we added.
+  
+  c) `def testFirstPage(self)`: A method is a test if its name is prefixed with test.
+
+  d) `movie_list_path = reverse('core:MovieList')`: `reverse()` is the Python equivalent of the url Django template tag. It will resolve the name into a path.
+
+  e) `request = RequestFactory().get(path=movie_list_path)`: RequestFactory is aconvenient factory for creating fake HTTP requests. A RequestFactory has convenience methods for creating GET,POST, and PUT requests by its convenience methods named after the verb (for example, get() for GET requests). In our case, the path object provided doesn't matter, but other views may want to inspect the path of the request.
+
+  f) `self.assertEqual(200, response.status_code)`: This asserts that the two arguments are equal. A response's status_code to check success or failure (200 being the status code for success - The one code you never see when you browse the web). 
+
+  g) `self.assertTrue(response.context_data['is_paginated'])`: This asserts that the argument evaluates to True. response exposes the context that is used in rendering the template. This makes finding bugs much easier as you can quickly check actual values used in rendering.
+
+  h) `self.assertInHTML(` : `assertInHTML` is one of the many convenient methods that Django provides as part of its Batteries Included philosophy. Given a valid HTML string `needle` and valid HTML string `haystack`, it will assert that `needle` is in `haystack`.
+
+To run the tests, we can use `manage.py`.
+
+(MyMDB) [kuvivek@vivekcentos django]$ python manage.py test
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+F
+======================================================================
+FAIL: testFirstPage (core.tests.MovieListPaginationTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kuvivek/Desktop/DjangoProjects/django/core/tests.py", line 29, in testFirstPage
+    self.assertTrue(response.context_data['is_paginated'])
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 0.031s
+
+FAILED (failures=1)
+Destroying test database for alias 'default'...
+(MyMDB) [kuvivek@vivekcentos django]$ 
+
+It failed. May be in one page all the movie details are able to adjust. In order to simulate the pagination, Lets force the list view to display two movies per page.
+In order to achieve the same. Lets add the following attribute in the class MovieList
+
+```
+(MyMDB) [kuvivek@vivekcentos core]$ git diff --color views.py
+diff --git a/django/core/views.py b/django/core/views.py
+index ae76eb3..6e4d832 100644
+--- a/django/core/views.py
++++ b/django/core/views.py
+@@ -11,6 +11,7 @@ class MovieList(ListView):
+     # It will query for all the rows of that model, pass it to the template
+     # and returned the rendered template in a response.
+     model = Movie
++    paginate_by = 2
+ 
+ class MovieDetail(DetailView):
+     model = Movie
+(MyMDB) [kuvivek@vivekcentos core]$ 
+
+```
+
+Running the test once again.
+
+(MyMDB) [kuvivek@vivekcentos django]$ 
+(MyMDB) [kuvivek@vivekcentos django]$ python manage.py test
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.047s
+
+OK
+Destroying test database for alias 'default'...
+(MyMDB) [kuvivek@vivekcentos django]$
+
+This time it successfully passed.
+
+
+24. Adding Person and model relationships.
+
+In this section, we will add relationships between models to this project. People's relationship to movies can create a complex data model. The same person can be the actor, writer,
+and director (for example, The Apostle (1997) written, directed, and starring Robert Duvall). Even leaving out the crew and production teams and simplifying a bit, the data model will 
+involve a one-to-many relationship using a `ForeignKey` field, a many-to-many relationship using a `ManyToManyField`, and a class that adds extra information about a many-to-many 
+relationship using a through class in a `ManyToManyField`.
+
+   Lets create the following steps:
+   1. Create a Person model.
+   2. Add a `ForeignKey` field from `Movie` to `Person` to track the director.
+   3. Add a `ManyToManyField` from `Movie` to `Person` to track the writers.
+   4. Add a `ManyToManyField` with a through class(Actor) to track, who performed and in what role in a Movie.
+   5. Create the migration.
+   6. Add the director, writer, and actors to the movie details template.
+   7. Add a `PersonalDetail` view to the list that indicates what movie a Person has directed, written, and performed in.
+
+25. Adding a model with relationships.
+
 
 
