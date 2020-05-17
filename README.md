@@ -1,7 +1,6 @@
 1. Create a folder called DjangoProjects in the Centos Linux Desktop
 
 ```
-[kuvivek@vivekcentos DjangoProjects]$
 [kuvivek@vivekcentos DjangoProjects]$ ls
 [kuvivek@vivekcentos DjangoProjects]$
 ```
@@ -12,7 +11,6 @@ another location.
  
 
 ```
-[kuvivek@vivekcentos ~]$
 [kuvivek@vivekcentos ~]$ python
 Python 2.7.5 (default, Aug  7 2019, 00:51:29)
 [GCC 4.8.5 20150623 (Red Hat 4.8.5-39)] on linux2
@@ -26,7 +24,6 @@ Type "help", "copyright", "credits" or "license" for more information.
 [kuvivek@vivekcentos ~]$ which python3.7
 /usr/local/bin/python3.7
 [kuvivek@vivekcentos ~]$
-[kuvivek@vivekcentos ~]$
 ```
 
 3. Before starting any Django project, It is advisable to create a virtualenv.
@@ -34,7 +31,6 @@ If we execute the command like this It will create python2.7 Virtualenv
 which we obviously don't want.
 
 ```
-[kuvivek@vivekcentos DjangoProjects]$
 [kuvivek@vivekcentos DjangoProjects]$ virtualenv MyMDB
   No LICENSE.txt / LICENSE found in source
 New python executable in /home/kuvivek/Desktop/DjangoProjects/MyMDB/bin/python2
@@ -50,7 +46,6 @@ So the solution to create virtualenv with python3. It need the following steps.
 
 
 ```
-[kuvivek@vivekcentos DjangoProjects]$
 [kuvivek@vivekcentos DjangoProjects]$ python3.7 -m virtualenv MyMDB
 /usr/local/bin/python3.7: No module named virtualenv
 [kuvivek@vivekcentos DjangoProjects]$
@@ -60,7 +55,6 @@ So the solution to create virtualenv with python3. It need the following steps.
 It is required to install `virtualenv` first.
  
 ```
-[kuvivek@vivekcentos DjangoProjects]$
 [kuvivek@vivekcentos DjangoProjects]$ python3.7 -m pip install virtualenv
 Collecting virtualenv
   Downloading https://files.pythonhosted.org/packages/8b/12/8d4f45b8962b03ac9efefe5ed5053f6b29334d83e438b4fe379d21c0cb8e/virtualenv-16.7.5-py2.py3-none-any.whl (3.3MB)
@@ -78,7 +72,6 @@ to install in the site-packages folder.
 
 
 ```
-[kuvivek@vivekcentos DjangoProjects]$
 [kuvivek@vivekcentos DjangoProjects]$ python3.7 -m pip install virtualenv --user
 Collecting virtualenv
   Using cached https://files.pythonhosted.org/packages/8b/12/8d4f45b8962b03ac9efefe5ed5053f6b29334d83e438b4fe379d21c0cb8e/virtualenv-16.7.5-py2.py3-none-any.whl
@@ -91,7 +84,6 @@ New python executable in /home/kuvivek/Desktop/DjangoProjects/MyMDB/bin/python3.
 Also creating executable in /home/kuvivek/Desktop/DjangoProjects/MyMDB/bin/python
 Installing setuptools, pip, wheel...
 done.
-[kuvivek@vivekcentos DjangoProjects]$
 [kuvivek@vivekcentos DjangoProjects]$
 ```
 
@@ -110,13 +102,11 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 >>> exit()
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$
-(MyMDB) [kuvivek@vivekcentos DjangoProjects]$
 ```
 
 4. Create a requirements.dev.txt file so as to install necessary softwares. Currently only the python3 is installed.
 
 ```
-(MyMDB) [kuvivek@vivekcentos DjangoProjects]$
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$ vi requirements.dev.txt
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$ cat requirements.dev.txt
@@ -143,7 +133,6 @@ Successfully installed django-2.0.13 psycopg2-2.7.7 pytz-2019.2
 Lets create a project called config.
 
 ```
-(MyMDB) [kuvivek@vivekcentos DjangoProjects]$
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$ django-admin startproject config
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$ tree config/
@@ -273,7 +262,6 @@ INSTALLED_APPS = [
 10. Adding First Model - Movie
 
 ```
-(MyMDB) [kuvivek@vivekcentos django]$
 (MyMDB) [kuvivek@vivekcentos django]$ cat core/models.py
 from django.db import models
 
@@ -309,9 +297,7 @@ class Movie(models.Model):
             self.title, self.year)
 
 (MyMDB) [kuvivek@vivekcentos django]$
-(MyMDB) [kuvivek@vivekcentos django]$
 ```
-
 
 11. Migrating the Database
 
@@ -321,7 +307,6 @@ While Django can create and run migrations for our Django apps, it will not crea
 database and database user for our Django project. To create the database and user, we have
 to connect to the server using an administrator's account. Once we've connected we can
 create the database and user by executing the following SQL:
-
 
 ```
 [kuvivek@vivekcentos DjangoProjects]$ su - postgres
@@ -371,7 +356,6 @@ postgres-# \q
 -bash-4.2$ exit
 logout
 [kuvivek@vivekcentos DjangoProjects]$
-[kuvivek@vivekcentos DjangoProjects]$
 ```
 
 The above SQL statements will create the database and user for our Django project. The
@@ -390,7 +374,6 @@ Migrations for 'core':
   core/migrations/0001_initial.py
     - Create model Movie
 (MyMDB) [kuvivek@vivekcentos django]$
-(MyMDB) [kuvivek@vivekcentos django]$
 ```
 
 A migration is a Python file in our Django app that describes how to change the database
@@ -402,7 +385,6 @@ Remember that it's apps not projects that have migrations (since it's apps that 
 Next, we tell `manage.py` to migrate our app:
 
 ```
-(MyMDB) [kuvivek@vivekcentos django]$
 (MyMDB) [kuvivek@vivekcentos django]$ python manage.py migrate core
 Operations to perform:
   Apply all migrations: core
@@ -430,7 +412,6 @@ mymdb=> \dt
 
 mymdb=>
 mymdb=> \q
-(MyMDB) [kuvivek@vivekcentos django]$
 (MyMDB) [kuvivek@vivekcentos django]$
 ```
 
@@ -465,7 +446,6 @@ Running migrations:
   Applying auth.0009_alter_user_last_name_max_length... OK
   Applying sessions.0001_initial... OK
 (MyMDB) [kuvivek@vivekcentos django]$
-(MyMDB) [kuvivek@vivekcentos django]$
 ```
 
 This creates tables to keep track of users, sessions, permissions, and the administrative
@@ -478,13 +458,11 @@ connected to the database, so we can create, query, update, and delete models fr
 shell:
 
 ```
-(MyMDB) [kuvivek@vivekcentos django]$
 (MyMDB) [kuvivek@vivekcentos django]$ python manage.py shell
 Python 3.7.3 (default, Sep  1 2019, 17:16:31)
 [GCC 4.8.5 20150623 (Red Hat 4.8.5-36)] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 (InteractiveConsole)
->>>
 >>>
 >>> from core.models import Movie
 >>> sleuth = Movie.objects.create(
@@ -532,14 +510,12 @@ admin.site.register(Movie)
 Once the Movie model is registered, then Create a super user.
 
 ```
-(MyMDB) [kuvivek@vivekcentos django]$ 
 (MyMDB) [kuvivek@vivekcentos django]$ python manage.py createsuperuser
 Username (leave blank to use 'kuvivek'): 
 Email address: vivekkumar.bitsindri@gmail.com
 Password: 
 Password (again): 
 Superuser created successfully.
-(MyMDB) [kuvivek@vivekcentos django]$ 
 (MyMDB) [kuvivek@vivekcentos django]$ 
 (MyMDB) [kuvivek@vivekcentos django]$ python manage.py runserver
 Performing system checks...
@@ -564,7 +540,6 @@ Let's write a view to list the movies that we have. Open `django/core/views.py` 
 change it to the following:
 
 ```
-(MyMDB) [kuvivek@vivekcentos DjangoProjects]$ 
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$ cat django/core/views.py 
 from django.shortcuts import render
 
@@ -1179,4 +1154,68 @@ relationship using a through class in a `ManyToManyField`.
    7. Add a `PersonalDetail` view to the list that indicates what movie a Person has directed, written, and performed in.
 
 25. Adding a model with relationships.
+
+First, we need a person class to describe and store a person involved in a movie.
+
+[kuvivek@mycentos core]$ git diff models.py
+diff --git a/django/core/models.py b/django/core/models.py
+index 468bdcf..11e3f33 100644
+--- a/django/core/models.py
++++ b/django/core/models.py
+@@ -1,5 +1,20 @@
+ from django.db import models
+ 
++
++class Person(models.Model):
++    first_name = models.CharField(max_length=140)
++    last_name = models.CharField(max_length=140)
++    born = models.DateField()
++    died = models.DateField(null=True, blank=True)
++
++    class Meta:
++        ordering = ('last_name', 'first_name')
++
++    def __str__(self):
++        if self.died:
++            return '{}, {} ({}-{})'.format(self.last_name, self.first_name, self.born, self.died)
++        return '{}, {} ({})'.format(self.last_name, self.first_name, self.born)
++
+
+In `Person` , we also see a new field (`DateField`) and a new parameter for fields (null).
+`DateField` is used for tracking date-based data, using the appropriate column type on the
+database (`date` on Postgres) and `datetime.date` in Python. Django also offers a
+`DateTimeField` to store the date and time.
+
+All fields support the null parameter (`False` by default), which indicates whether the
+column should accept `NULL` SQL values (represented by `None` in Python). We mark `died` as
+supporting `null` so that we can record people as living or dead. Then, in
+the `__str__()` method we print out a different string representation if someone is alive or
+dead.
+
+We now have the `Person` model that can have various relationships with `Movies`.
+
+Different types of relationship fields
+
+Django's ORM has support for fields that map relationships between models, including
+one-to-many, many-to-many, and many-to-many with an intermediary model.
+When two models have a one-to-many relationship, we use a `ForeignKey` field, which will
+create a column with a Foreign Key (FK) constraint (assuming that there is database
+support) between the two tables. In the model without the `ForeignKey` field, Django will
+automatically add a `RelatedManager` object as an instance attribute.
+
+The `RelatedManager` class makes it easier to query for objects in a relationship. We'll take
+a look at examples of this in the following sections.
+When two models have a many-to-many relationship, either (but not both) of them can get
+the `ManyToManyField()`; Django will create a `RelatedManager` on the other side for you.
+As you may know, relational databases cannot actually have a many-to-many relationship
+between two tables. Rather, relational databases require a bridging table with foreign keys to
+each of related tables. Assuming that we don't want to add any attributes describing the
+relationship, Django will create and manage this bridging table for us automatically.
+Sometimes, we want extra fields to describe a many-to-many relationship (for example,
+when it started or ended); for that, we can provide a `ManyToManyField` with a
+`through` model (sometimes called an association class in UML/OO). This model will have a
+`ForeignKey` to each side of the relationship and any extra fields we want.
+We'll create an example of each of these, as we go along adding directors, writers, and
+actors into our `Movie` model.
+
 
