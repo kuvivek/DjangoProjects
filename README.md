@@ -1,14 +1,15 @@
-1. Create a folder called DjangoProjects in the Centos Linux Desktop
+
+## README.md
+
+1.  Create a folder called DjangoProjects in the Centos Linux Desktop
 
 ```
 [kuvivek@vivekcentos DjangoProjects]$ ls
 [kuvivek@vivekcentos DjangoProjects]$
+
 ```
 
-2. Since Centos7 comes default with python2.7. Hence for using the newer 
-Python3.7. Perform the build of Python3.7 source code and install it in
-another location.
- 
+2.  Since Centos7 comes default with python2.7. Hence for using the newer Python3.7. Perform the build of Python3.7 source code and install it in another location.
 
 ```
 [kuvivek@vivekcentos ~]$ python
@@ -24,11 +25,10 @@ Type "help", "copyright", "credits" or "license" for more information.
 [kuvivek@vivekcentos ~]$ which python3.7
 /usr/local/bin/python3.7
 [kuvivek@vivekcentos ~]$
+
 ```
 
-3. Before starting any Django project, It is advisable to create a virtualenv.
-If we execute the command like this It will create python2.7 Virtualenv
-which we obviously don't want.
+3.  Before starting any Django project, It is advisable to create a virtualenv. If we execute the command like this It will create python2.7 Virtualenv which we obviously don't want.
 
 ```
 [kuvivek@vivekcentos DjangoProjects]$ virtualenv MyMDB
@@ -38,22 +38,22 @@ Also creating executable in /home/kuvivek/Desktop/DjangoProjects/MyMDB/bin/pytho
 Installing setuptools, pip, wheel...
 done.
 [kuvivek@vivekcentos DjangoProjects]$
+
 ```
 
 So the solution to create virtualenv with python3. It need the following steps.
 
-3.1 Creating My Movie Database folder in short 'MyMDB' using the below command 
-
+3.1 Creating My Movie Database folder in short 'MyMDB' using the below command
 
 ```
 [kuvivek@vivekcentos DjangoProjects]$ python3.7 -m virtualenv MyMDB
 /usr/local/bin/python3.7: No module named virtualenv
 [kuvivek@vivekcentos DjangoProjects]$
+
 ```
 
-3.2 The `virtualenv` command itself was not available in Python3.7. So 
-It is required to install `virtualenv` first.
- 
+3.2 The `virtualenv` command itself was not available in Python3.7. So It is required to install `virtualenv` first.
+
 ```
 [kuvivek@vivekcentos DjangoProjects]$ python3.7 -m pip install virtualenv
 Collecting virtualenv
@@ -64,12 +64,10 @@ ERROR: Could not install packages due to an EnvironmentError: [Errno 13] Permiss
 Consider using the `--user` option or check the permissions.
 
 [kuvivek@vivekcentos DjangoProjects]$
+
 ```
 
-3.3 Since the python is installed in the current user context. It is advising 
-to run the same with --user option. Although the package is cached but failed
-to install in the site-packages folder.
-
+3.3 Since the python is installed in the current user context. It is advising to run the same with --user option. Although the package is cached but failed to install in the site-packages folder.
 
 ```
 [kuvivek@vivekcentos DjangoProjects]$ python3.7 -m pip install virtualenv --user
@@ -85,6 +83,7 @@ Also creating executable in /home/kuvivek/Desktop/DjangoProjects/MyMDB/bin/pytho
 Installing setuptools, pip, wheel...
 done.
 [kuvivek@vivekcentos DjangoProjects]$
+
 ```
 
 3.4 Virtual environment MyMDB is created. It need to be activated.
@@ -102,9 +101,10 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 >>> exit()
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$
+
 ```
 
-4. Create a requirements.dev.txt file so as to install necessary softwares. Currently only the python3 is installed.
+4.  Create a requirements.dev.txt file so as to install necessary softwares. Currently only the python3 is installed.
 
 ```
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$ vi requirements.dev.txt
@@ -127,10 +127,10 @@ Installing collected packages: pytz, django, psycopg2
 Successfully installed django-2.0.13 psycopg2-2.7.7 pytz-2019.2
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$
+
 ```
 
-5. Now Django is installed for this virtual environment.
-Lets create a project called config.
+5.  Now Django is installed for this virtual environment. Lets create a project called config.
 
 ```
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$ django-admin startproject config
@@ -138,17 +138,18 @@ Lets create a project called config.
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$ tree config/
 config/
 ├── config
-│   ├── __init__.py
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
 └── manage.py
 
 1 directory, 5 files
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$
+
 ```
 
-6. Moving the project name to django from config.
+6.  Moving the project name to django from config.
 
 ```
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$ mv config django
@@ -156,18 +157,18 @@ config/
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$ tree django
 django
 ├── config
-│   ├── __init__.py
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
 └── manage.py
 
 1 directory, 5 files
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$
+
 ```
 
-7. Configuring Database Settings. 
-Since by default the Django uses by default SQLITE DB, which is not suitable for Production. 
+7.  Configuring Database Settings. Since by default the Django uses by default SQLITE DB, which is not suitable for Production.
 
 ```
 DATABASES = {
@@ -176,6 +177,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
 ```
 
 As a matter of best practice change it to the same PostgresSQL DB for development also.
@@ -191,18 +193,19 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
 ```
 
-8. Create an app inside the `django` project folder formerly `config` folder, using startapp command shown below:
+8.  Create an app inside the `django` project folder formerly `config` folder, using startapp command shown below:
 
 ```
 (MyMDB) [kuvivek@vivekcentos django]$ tree .
 .
 ├── config
-│   ├── __init__.py
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
 └── manage.py
 
 1 directory, 5 files
@@ -213,22 +216,22 @@ DATABASES = {
 (MyMDB) [kuvivek@vivekcentos django]$ tree
 .
 ├── config
-│   ├── __init__.py
-│   ├── __pycache__
-│   │   ├── __init__.cpython-37.pyc
-│   │   └── settings.cpython-37.pyc
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-37.pyc
+│   │   └── settings.cpython-37.pyc
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
 ├── core
-│   ├── admin.py
-│   ├── apps.py
-│   ├── __init__.py
-│   ├── migrations
-│   │   └── __init__.py
-│   ├── models.py
-│   ├── tests.py
-│   └── views.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── __init__.py
+│   ├── migrations
+│   │   └── __init__.py
+│   ├── models.py
+│   ├── tests.py
+│   └── views.py
 └── manage.py
 
 4 directories, 14 files
@@ -239,13 +242,10 @@ Collecting psycopg2-binary
 Installing collected packages: psycopg2-binary
 Successfully installed psycopg2-binary-2.8.3
 (MyMDB) [kuvivek@vivekcentos django]$
+
 ```
 
-9. Now In the `settings.py` of the config folder `INSTALLED_APPS`, which is a 
-list of Python paths to Python modules that are Django apps. These apps are by
-default installed to solve common problems, such as managing static files,
-sessions, and authentication and an admin backend.
-So Lets put our core app in this.
+9.  Now In the `settings.py` of the config folder `INSTALLED_APPS`, which is a list of Python paths to Python modules that are Django apps. These apps are by default installed to solve common problems, such as managing static files, sessions, and authentication and an admin backend. So Lets put our core app in this.
 
 ```
 INSTALLED_APPS = [
@@ -258,8 +258,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+
 ```
-10. Adding First Model - Movie
+
+10.  Adding First Model - Movie
 
 ```
 (MyMDB) [kuvivek@vivekcentos django]$ cat core/models.py
@@ -297,16 +299,14 @@ class Movie(models.Model):
             self.title, self.year)
 
 (MyMDB) [kuvivek@vivekcentos django]$
+
 ```
 
-11. Migrating the Database
+11.  Migrating the Database
 
-Since the Model is created now, It's the time to create a table that matches the 
+Since the Model is created now, It's the time to create a table that matches the
 
-While Django can create and run migrations for our Django apps, it will not create the
-database and database user for our Django project. To create the database and user, we have
-to connect to the server using an administrator's account. Once we've connected we can
-create the database and user by executing the following SQL:
+While Django can create and run migrations for our Django apps, it will not create the database and database user for our Django project. To create the database and user, we have to connect to the server using an administrator's account. Once we've connected we can create the database and user by executing the following SQL:
 
 ```
 [kuvivek@vivekcentos DjangoProjects]$ su - postgres
@@ -356,15 +356,10 @@ postgres-# \q
 -bash-4.2$ exit
 logout
 [kuvivek@vivekcentos DjangoProjects]$
+
 ```
 
-The above SQL statements will create the database and user for our Django project. The
-'grant' statement ensures that our mymdb user will have access to the database. Then, we
-set a password on the `mymdb` user (make sure it's the same as in your `settings.py` file).
-Finally, we give the `mymdb` user permission to create new databases, which will be used by
-Django to create a test database when running tests.
-
-12. 
+The above SQL statements will create the database and user for our Django project. The 'grant' statement ensures that our mymdb user will have access to the database. Then, we set a password on the `mymdb` user (make sure it's the same as in your `settings.py` file). Finally, we give the `mymdb` user permission to create new databases, which will be used by Django to create a test database when running tests.
 
 To generate a migration for our app, we'll need to tell `manage.py` file to do as follows:
 
@@ -374,15 +369,12 @@ Migrations for 'core':
   core/migrations/0001_initial.py
     - Create model Movie
 (MyMDB) [kuvivek@vivekcentos django]$
+
 ```
 
-A migration is a Python file in our Django app that describes how to change the database
-into a desired state. Django migrations are not tied to a particular database system (the
-same migrations will work across supported databases, unless we add database-specific
-code). Django generates migration files that use Django's migrations API.
+A migration is a Python file in our Django app that describes how to change the database into a desired state. Django migrations are not tied to a particular database system (the same migrations will work across supported databases, unless we add database-specific code). Django generates migration files that use Django's migrations API.
 
-Remember that it's apps not projects that have migrations (since it's apps that have models).
-Next, we tell `manage.py` to migrate our app:
+Remember that it's apps not projects that have migrations (since it's apps that have models). Next, we tell `manage.py` to migrate our app:
 
 ```
 (MyMDB) [kuvivek@vivekcentos django]$ python manage.py migrate core
@@ -391,6 +383,7 @@ Operations to perform:
 Running migrations:
   Applying core.0001_initial... OK
 (MyMDB) [kuvivek@vivekcentos django]$
+
 ```
 
 Now, our table exists in our database:
@@ -413,17 +406,12 @@ mymdb=> \dt
 mymdb=>
 mymdb=> \q
 (MyMDB) [kuvivek@vivekcentos django]$
+
 ```
 
-We can see that our database has two tables. The default naming scheme for Django's
-model's tables is <app_name>_<model_name>. We can tell `core_movie` is the table for the
-`Movie` model from the `core` app. `django_migrations` is for Django's internal use to track
-the migrations that have been applied. Altering the `django_migrations` table directly
-instead of using `manage.py` is a bad idea, which will lead to problems when you try to
-apply or roll back migrations.
+We can see that our database has two tables. The default naming scheme for Django's model's tables is <app_name>_<model_name>. We can tell `core_movie` is the table for the `Movie` model from the `core` app. `django_migrations` is for Django's internal use to track the migrations that have been applied. Altering the `django_migrations` table directly instead of using `manage.py` is a bad idea, which will lead to problems when you try to apply or roll back migrations.
 
-The migration commands can also run without specifying an app, in which case it will run
-on all the apps. Let's run the `manage.py` command without an app:
+The migration commands can also run without specifying an app, in which case it will run on all the apps. Let's run the `manage.py` command without an app:
 
 ```
 (MyMDB) [kuvivek@vivekcentos django]$
@@ -446,16 +434,14 @@ Running migrations:
   Applying auth.0009_alter_user_last_name_max_length... OK
   Applying sessions.0001_initial... OK
 (MyMDB) [kuvivek@vivekcentos django]$
+
 ```
 
-This creates tables to keep track of users, sessions, permissions, and the administrative
-backend.
+This creates tables to keep track of users, sessions, permissions, and the administrative backend.
 
-13. Creating our First Movie.
+13.  Creating our First Movie.
 
-Like Python, Django offers an interactive REPL to try things out. The Django shell is fully
-connected to the database, so we can create, query, update, and delete models from the
-shell:
+Like Python, Django offers an interactive REPL to try things out. The Django shell is fully connected to the database, so we can create, query, update, and delete models from the shell:
 
 ```
 (MyMDB) [kuvivek@vivekcentos django]$ python manage.py shell
@@ -480,17 +466,19 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 >>> exit()
 (MyMDB) [kuvivek@vivekcentos django]$
+
 ```
 
 Next, let's create a backend for managing movies using the Django Admin app.
 
-14. Creating Movie Admin
- 
+14.  Creating Movie Admin
+
 To get Django's admin app working with our models, we will perform the following steps:
-  1. Register our model
-  2. Create a super user who can access the backend
-  3. Run the development server
-  4. Access the backend in a browser
+
+1.  Register our model
+2.  Create a super user who can access the backend
+3.  Run the development server
+4.  Access the backend in a browser
 
 Registering Movie Model with the admin by editing `django/core/admin.py` file.
 
@@ -504,6 +492,7 @@ from core.models import Movie
 
 admin.site.register(Movie)
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$ 
+
 
 ```
 
@@ -525,19 +514,12 @@ September 22, 2019 - 21:47:05
 Django version 2.0.13, using settings 'config.settings'
 Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
+
 ```
 
+15.  Creating MovieList view When Django gets a request, it uses the path of the request and the `URLConf` of the project to match a request to a view, which returns an HTTP response. Django's views can be either functions, often referred to as Function-Based Views (FBVs), or classes, often called Class- Based Views (CBVs). The advantage of CBVs is that Django comes with a rich suite of generic views that you can subclass to easily (almost declaratively) write views to accomplish common tasks.
 
-15. Creating MovieList view
-When Django gets a request, it uses the path of the request and the `URLConf` of the project
-to match a request to a view, which returns an HTTP response. Django's views can be either
-functions, often referred to as Function-Based Views (FBVs), or classes, often called Class-
-Based Views (CBVs). The advantage of CBVs is that Django comes with a rich suite of generic 
-views that you can subclass to easily (almost declaratively) write views to accomplish common
-tasks.
-
-Let's write a view to list the movies that we have. Open `django/core/views.py` and
-change it to the following:
+Let's write a view to list the movies that we have. Open `django/core/views.py` and change it to the following:
 
 ```
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$ cat django/core/views.py 
@@ -557,70 +539,42 @@ class MovieList(ListView):
 
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$ 
 
+
 ```
 
-`ListView` requires at least a `model` attribute. It will query for all the rows of that model,
-pass it to the template, and return the rendered template in a response. It also offers a
-number of hooks that we may use to replace default behavior.
+`ListView` requires at least a `model` attribute. It will query for all the rows of that model, pass it to the template, and return the rendered template in a response. It also offers a number of hooks that we may use to replace default behavior.
 
-How does `ListView` know how to query all the objects in `Movie`? For that, we will need to
-discuss manager and `QuerySet` classes. Every model has a default manager. Manager classes are 
-primarily used to query objects by offering methods, such as `all()`, that return a `QuerySet`. 
-A `QuerySet` class is Django's representation of a query to the database. `QuerySet` has a 
-number of methods, including `filter()` (such as a 'WHERE' clause in a 'SELECT' statement) to
-limit a result. One of the nice features of the `QuerySet` class is that it is lazy; it is not
-evaluated until we try to get a model out of the `QuerySet`. Another nice feature is that 
-methods such as `filter()` take lookup expressions, which can be field names or span across
-relationship models.
+How does `ListView` know how to query all the objects in `Movie`? For that, we will need to discuss manager and `QuerySet` classes. Every model has a default manager. Manager classes are primarily used to query objects by offering methods, such as `all()`, that return a `QuerySet`. A `QuerySet` class is Django's representation of a query to the database. `QuerySet` has a number of methods, including `filter()` (such as a 'WHERE' clause in a 'SELECT' statement) to limit a result. One of the nice features of the `QuerySet` class is that it is lazy; it is not evaluated until we try to get a model out of the `QuerySet`. Another nice feature is that methods such as `filter()` take lookup expressions, which can be field names or span across relationship models.
 
-So, how does `ListView` know that it has to query all the objects in `Movie`? `ListView`
-checks whether it has a `model` attribute, and, if present, knows that `Model` classes have a
-default manager with a `all()` method, which it calls. `ListView` also gives us a convention
-for where to put our template, as follows: `<app_name><model_name>_list.html`.
+So, how does `ListView` know that it has to query all the objects in `Movie`? `ListView` checks whether it has a `model` attribute, and, if present, knows that `Model` classes have a default manager with a `all()` method, which it calls. `ListView` also gives us a convention for where to put our template, as follows: `<app_name><model_name>_list.html`.
 
-16. Adding our first template - movie_list.html
+16.  Adding our first template - movie_list.html
 
-Django ships with its own template language called the Django Template language.
-Django can also use other template languages (for example, Jinja2), but most Django
-projects find using the Django Template language to be efficient and convenient.
-In the default configuration that is generated in our `settings.py` file, the Django Template
-language is configured to use "APP_DIRS" , meaning that each Django app can have a
-`templates` directory, which will be searched to find a template. This can be used to
-override templates that other apps use without having to modify the third-party apps
-themselves.
+Django ships with its own template language called the Django Template language. Django can also use other template languages (for example, Jinja2), but most Django projects find using the Django Template language to be efficient and convenient. In the default configuration that is generated in our `settings.py` file, the Django Template language is configured to use "APP_DIRS" , meaning that each Django app can have a `templates` directory, which will be searched to find a template. This can be used to override templates that other apps use without having to modify the third-party apps themselves.
 
 Let's make our first template in `django/core/templates/core/movie_list.html`.
 
 The final step will be to connect our view to a `URLConf`.
 
+17.  Routing requests to our view with URLConf
 
-17. Routing requests to our view with URLConf
+Now that we have a model, view, and template, we will need to tell Django which requests it should route to our `MovieList` View using a URLConf. Each new project has a root URLConf that created by Django (in our case it's the `django/config/urls.py` file). Django developers have developed the best practice of each app having its own URLConf. Then, the root URLConf of a project will include each app's URLConf using the `include()` function.
 
-Now that we have a model, view, and template, we will need to tell Django which requests
-it should route to our `MovieList` View using a URLConf. Each new project has a root
-URLConf that created by Django (in our case it's the `django/config/urls.py` file).
-Django developers have developed the best practice of each app having its own URLConf.
-Then, the root URLConf of a project will include each app's URLConf using the `include()`
-function.
+create a URLConf for our core app by creating a `django/config/urls.py` file. And then connect our `URLConf` to the root `URLConf` by changing `django/config/urls.py`.
 
-create a URLConf for our core app by creating a `django/config/urls.py` file.
-And then connect our `URLConf` to the root `URLConf` by changing `django/config/urls.py`.
-
-18. Creation of Individual movie page
+18.  Creation of Individual movie page
 
 To add movie details following things are required.
-  
-  1. Create a movie detail view
-  2. Create a movie_detail.html template
-  3. Reference to our MovieDetail view in our URLConf
 
+1.  Create a movie detail view
+2.  Create a movie_detail.html template
+3.  Reference to our MovieDetail view in our URLConf
 
-  18.1 Django provides DetailView class that we can subclass to create a view showing the details of single 
-       Model.   
-   
-  Create view in django/core/views.py
+18.1 Django provides DetailView class that we can subclass to create a view showing the details of single Model.
 
-```   
+Create view in django/core/views.py
+
+```
 @@ -1,7 +1,7 @@
  from django.shortcuts import render
  
@@ -638,26 +592,20 @@ To add movie details following things are required.
 +    model = Movie
 (MyMDB) [kuvivek@vivekcentos DjangoProjects]$ 
 
-```   
-   18.2 Create movie_detail.html template
 
-Django's Template language supports template inheritance, which means that you can write
-a template with all the look and feel for our website and mark the `block` sections that
-other templates will override. This allows to create the look and feel of the entire website
-without having to edit each template. Creating a base template with MyMDBb's branding and
-look and feel and then add a Movie Detail template that inherits from the
-base template.
+```
 
-A base template shouldn't be tied to a particular app, so let's make a general templates
-directory:
+18.2 Create movie_detail.html template
 
- `$ mkdir django/templates`
+Django's Template language supports template inheritance, which means that you can write a template with all the look and feel for our website and mark the `block` sections that other templates will override. This allows to create the look and feel of the entire website without having to edit each template. Creating a base template with MyMDBb's branding and look and feel and then add a Movie Detail template that inherits from the base template.
 
-Django doesn't know to check our `templates` directory yet, so we will need to update the
-configuration in our `settings.py` file. Find the line that starts with `TEMPLATES` and
-change the configuration to list our `templates` directory in the `DIRS` list:
+A base template shouldn't be tied to a particular app, so let's make a general templates directory:
 
-```   
+`$ mkdir django/templates`
+
+Django doesn't know to check our `templates` directory yet, so we will need to update the configuration in our `settings.py` file. Find the line that starts with `TEMPLATES` and change the configuration to list our `templates` directory in the `DIRS` list:
+
+```
 @@ -55,7 +55,9 @@ ROOT_URLCONF = 'config.urls'
  TEMPLATES = [
      {
@@ -670,11 +618,12 @@ change the configuration to list our `templates` directory in the `DIRS` list:
          'OPTIONS': {
              'context_processors': [
 
-```   
+
+```
 
 Let's create a base template in django/templates/base.html that has a main column and sidebar.
 
-```   
+```
 <!DOCTYPE html>
 <html lang="en" >
 <head >
@@ -731,24 +680,18 @@ Let's create a base template in django/templates/base.html that has a main colum
 </body >
 </html >
 
-```   
 
-Most of this HTML is actually bootstrap (HTML/CSS framework) boilerplate, but we do
-have a few new Django tags:
+```
 
-`{% block title %}MyMDB{% endblock %}` : This creates a block that other templates 
-can replace. If the block is not replaced, the contents from the parent template will 
-be used.
+Most of this HTML is actually bootstrap (HTML/CSS framework) boilerplate, but we do have a few new Django tags:
 
+`{% block title %}MyMDB{% endblock %}` : This creates a block that other templates can replace. If the block is not replaced, the contents from the parent template will be used.
 
-href="{% url 'core:MovieList' %}" : The `url` tag will produce a URL path
-for the named `path` . URL names should be referenced as `<app_namespace>:<name>`; in our 
-case, `core` is the namespace of the core app (per `django/core/urls.py`), and `MovieList` 
-is the name of the MovieList view's URL.
+href="{% url 'core:MovieList' %}" : The `url` tag will produce a URL path for the named `path` . URL names should be referenced as `<app_namespace>:<name>`; in our case, `core` is the namespace of the core app (per `django/core/urls.py`), and `MovieList` is the name of the MovieList view's URL.
 
 This lets us create a simple template in `django/core/templates/core/movie_detail.html`
 
-```   
+```
 {% extends 'base.html' %}
 
 {% block title %}
@@ -771,25 +714,18 @@ This movie is rated:
 </div>
 {% endblock %}
 
-```   
+
+```
 
 Let's take a look at some new tags:
 
-`{% extends 'base.html' %}` : If a template wants to extend another template
-the first line must be an `extends` tag. Django will look for the base template
-(which can `extend` another template) and execute it first, then replace the blocks.
-A template that extends another cannot have content outside of blocks because
-it's ambiguous where to put that content.
+`{% extends 'base.html' %}` : If a template wants to extend another template the first line must be an `extends` tag. Django will look for the base template (which can `extend` another template) and execute it first, then replace the blocks. A template that extends another cannot have content outside of blocks because it's ambiguous where to put that content.
 
-`{{ object.title }} - {{ block.super }}` : We reference `block.super`
-inside the `title` template block. `block.super` returns the contents of the
-`title` template `block` in the base template.
+`{{ object.title }} - {{ block.super }}` : We reference `block.super` inside the `title` template block. `block.super` returns the contents of the `title` template `block` in the base template.
 
-`{{ object.get_rating_display }}` : The Django Template language doesn't
-use () to execute the method, just referencing it by name will execute the
-method.
+`{{ object.get_rating_display }}` : The Django Template language doesn't use () to execute the method, just referencing it by name will execute the method.
 
- 18.3 Adding MovieDetail to core/urls.py 
+18.3 Adding MovieDetail to core/urls.py
 
 ```
 @@ -6,5 +6,6 @@ app_name = 'core'
@@ -800,22 +736,14 @@ method.
  
  ]
 
+
 ```
 
-The `MovieDetail` and `MovieList` both calls `path()` which look almost the same, except 
-for the `MovieDetail` string that has a named parameter. A path route string can include angle
-brackets to give a parameter a name and even define a type that the parameter's content must 
-conform to (for example, int:pk will only match values that parse as an int ). These named 
-sections are captured by Django and passed to the view by name. DetailView expects a pk	(or slug) 
-argument and uses it to get the correct row from the database.
+The `MovieDetail` and `MovieList` both calls `path()` which look almost the same, except for the `MovieDetail` string that has a named parameter. A path route string can include angle brackets to give a parameter a name and even define a type that the parameter's content must conform to (for example, int:pk will only match values that parse as an int ). These named sections are captured by Django and passed to the view by name. DetailView expects a pk (or slug) argument and uses it to get the correct row from the database.
 
-A slug is a short URL-friendly label that is often used in content-heavy sites, as it
-is SEO friendly.
+A slug is a short URL-friendly label that is often used in content-heavy sites, as it is SEO friendly.
 
-
-Let's use `python manage.py runserver` to start the `dev` server and take a 
-look at what our new template looks like:
-
+Let's use `python manage.py runserver` to start the `dev` server and take a look at what our new template looks like:
 
 ```
 (MyMDB) [kuvivek@vivekcentos django]$ python manage.py runserver
@@ -833,12 +761,12 @@ Quit the server with CONTROL-C.
 [28/Sep/2019 22:44:37] "GET /movies/2 HTTP/1.1" 200 1271
 [28/Sep/2019 22:44:41] "GET /movies/1 HTTP/1.1" 200 1263
 
+
 ```
 
-19. Pagination and Linking MovieList view to MovieDetail view
+19.  Pagination and Linking MovieList view to MovieDetail view
 
-Lets add pagination in the `MovieList` view to prevent it from querying the 
-entire database each time.
+Lets add pagination in the `MovieList` view to prevent it from querying the entire database each time.
 
 This needs updation of MovieList.html to extend the base.html.
 
@@ -879,24 +807,14 @@ This needs updation of MovieList.html to extend the base.html.
 +{% endblock %}
 +
 
+
 ```
 
-Here with the `url` tag, the `MovieDetail` URL requires a `pk` argument. 
-If there was no argument provided, then Django would raise a `NoReverseMatch` 
-exception on rendering, resulting in a 500 error.
+Here with the `url` tag, the `MovieDetail` URL requires a `pk` argument. If there was no argument provided, then Django would raise a `NoReverseMatch` exception on rendering, resulting in a 500 error.
 
-20. Setting the Page Order.
+20.  Setting the Page Order.
 
-Another problem with our current view is that it's not ordered. If the database is returning
-an unordered query, then pagination won't help navigation. What's more, there's no 
-guarantee that each time the user changes pages that the content will be consistent, as the
-database may return a differently ordered result set for each time. It is required that the 
-query to be ordered consistently.
-Ordering our model also makes our lives as developers easier too. Whether using a debugger, 
-writing tests, or running a shell ensuring that our models are returned in a consistent order 
-can make troubleshooting simpler. A Django model may optionally have an inner class called `Meta`
-, which lets us specify information about a Model. Let's add a `Meta` class with an `ordering` attribute:
-
+Another problem with our current view is that it's not ordered. If the database is returning an unordered query, then pagination won't help navigation. What's more, there's no guarantee that each time the user changes pages that the content will be consistent, as the database may return a differently ordered result set for each time. It is required that the query to be ordered consistently. Ordering our model also makes our lives as developers easier too. Whether using a debugger, writing tests, or running a shell ensuring that our models are returned in a consistent order can make troubleshooting simpler. A Django model may optionally have an inner class called `Meta` , which lets us specify information about a Model. Let's add a `Meta` class with an `ordering` attribute:
 
 ```
 @@ -19,6 +19,9 @@ class Movie(models.Model):
@@ -910,22 +828,16 @@ can make troubleshooting simpler. A Django model may optionally have an inner cl
          return '{} ({})'.format(
              self.title, self.year)
 
+
 ```
 
-`ordering` takes a list or tuple of, usually, strings that are field names, optionally prefixed
-by a `-` character that denotes descending order. ('-year', 'title') is the equivalent of
-the SQL clause `ORDER BY year DESC, title`.
+`ordering` takes a list or tuple of, usually, strings that are field names, optionally prefixed by a `-` character that denotes descending order. ('-year', 'title') is the equivalent of the SQL clause `ORDER BY year DESC, title`.
 
-Adding `ordering` to a Model's `Meta` class will mean that `QuerySets` from the model's
-manager will be ordered.
+Adding `ordering` to a Model's `Meta` class will mean that `QuerySets` from the model's manager will be ordered.
 
+21.  Adding Pagination
 
-21. Adding Pagination
-
-Now that our movies are always ordered the same way, let's add pagination. A Django
-`ListView` already has built-in support for pagination, so all we need to do is take
-advantage of it. Pagination is controlled by the `GET` parameter `page` that controls which
-page to show.
+Now that our movies are always ordered the same way, let's add pagination. A Django `ListView` already has built-in support for pagination, so all we need to do is take advantage of it. Pagination is controlled by the `GET` parameter `page` that controls which page to show.
 
 Let's add pagination to the bottom of our `main` template `block` :
 
@@ -966,58 +878,46 @@ Add the below code into the core/templates/core/movie_list.html
     </nav >
 {% endif %}
 {% endblock %}
+
 ```
 
 Let's take a look at some important points of our `MovieList` template:
-* `page_obj` is of the `Page` type, which knows information about this page of results. We use it to check whether there is a next/previous page using
-`has_next()` / `has_previous()` (we don't need to put in the Django template language, but `has_next()` is a method, not a property). We also use it to get
-the `next_page_number()`/ `previous_page_number()`. Note that it is important to use the `has_*()`  method to check for the existence of the next/previous page
-numbers before retrieving them. If they don't exist when retrieved, `Page` throws an `EmptyPage` exception.
 
-`object_list` continues to be available and hold the correct values. Even though `page_obj` encapsulates the results for this page in `page_obj.object_list`, 
-`ListView` does the convenient work of ensuring that we can continue to use `object_list` and our template doesn't break.
+-   `page_obj` is of the `Page` type, which knows information about this page of results. We use it to check whether there is a next/previous page using `has_next()` / `has_previous()` (we don't need to put in the Django template language, but `has_next()` is a method, not a property). We also use it to get the `next_page_number()`/ `previous_page_number()`. Note that it is important to use the `has_*()` method to check for the existence of the next/previous page numbers before retrieving them. If they don't exist when retrieved, `Page` throws an `EmptyPage` exception.
 
-22. 404 - Error page when the sought URL doesn't exist.
+`object_list` continues to be available and hold the correct values. Even though `page_obj` encapsulates the results for this page in `page_obj.object_list`, `ListView` does the convenient work of ensuring that we can continue to use `object_list` and our template doesn't break.
 
-We now have a couple of views that can't function if given the wrong value in the URL (the wrong `pk` will break `MovieDetail`; the wrong `page` will break `MovieList` ); 
-let's plan for that by handling  errors. Django offers a hook in the root URLConf to let us use a custom view for 404 errors (also for 403, 400 , and 500 all following 
-the same names scheme). In your root `urls.py` file, add a variable called `handler404` whose value is a string Python path to your custom view.
-However, we can continue to use the default  handler view and just write a custom template. Let's add a  template in `django/template/404.html`.
+22.  404 - Error page when the sought URL doesn't exist.
+
+We now have a couple of views that can't function if given the wrong value in the URL (the wrong `pk` will break `MovieDetail`; the wrong `page` will break `MovieList` ); let's plan for that by handling errors. Django offers a hook in the root URLConf to let us use a custom view for 404 errors (also for 403, 400 , and 500 all following the same names scheme). In your root `urls.py` file, add a variable called `handler404` whose value is a string Python path to your custom view. However, we can continue to use the default handler view and just write a custom template. Let's add a template in `django/template/404.html`.
 
 Even if another app throws a 404 error, this template will be used.
 
-At the moment, if you've got an unused URL such as `http://localhost:8000/unreal-page`, you won't see our custom 404 template
-because Django's `DEBUG` settings is `True` in `settings.py`. To make our 404 template visible, we will need to change the `DEBUG` and `ALLOWED_HOSTS` settings in `settings.py` :
-   `DEBUG = False`
-   `ALLOWED_HOSTS = [
-      'localhost',
-      '127.0.0.1'
-    ]`
+At the moment, if you've got an unused URL such as `http://localhost:8000/unreal-page`, you won't see our custom 404 template because Django's `DEBUG` settings is `True` in `settings.py`. To make our 404 template visible, we will need to change the `DEBUG` and `ALLOWED_HOSTS` settings in `settings.py` : `DEBUG = False` `ALLOWED_HOSTS = [ 'localhost', '127.0.0.1' ]`
 
-`ALLOWED_HOSTS` is a setting that restricts which `HOST` values in an HTTP request Django will respond to. If `DEBUG` is `False` and a `HOST` does not match an `ALLOWED_HOSTS` value,
-then Django will return a 400 error (you can customize both the view and template for this error as described in the preceding code). 
+`ALLOWED_HOSTS` is a setting that restricts which `HOST` values in an HTTP request Django will respond to. If `DEBUG` is `False` and a `HOST` does not match an `ALLOWED_HOSTS` value, then Django will return a 400 error (you can customize both the view and template for this error as described in the preceding code).
 
 With the following changes. The customized Page can be tested by putting the following URL in the browser.
 
 `http://127.0.0.1:8000/unreal-page`
 
-23. Testing Views and Templates
+23.  Testing Views and Templates
 
 The basics of testing is simple. The common XUnit pattern of the `TestCase` classes holding test methods that make assertions.
 
 For Django's TestRunner to find a test, it must be in the `tests` module of an installed app. That means `tests.py`.
 
 Adding the following testcase to perform TDD (Test Driven development).
-  - If there is more than 10 movies, then pagination controls should be rendered in the template.
-  - If there is more than 10 movies and we don't provide `page GET` parameters, consider the following things.
-     - The page_is_last context variable should be False.
-     - The page_is_first context variable should be True.
-     - The first item in the pagination should be marked as active.
 
+-   If there is more than 10 movies, then pagination controls should be rendered in the template.
+-   If there is more than 10 movies and we don't provide `page GET` parameters, consider the following things.
+    -   The page_is_last context variable should be False.
+    -   The page_is_first context variable should be True.
+    -   The first item in the pagination should be marked as active.
 
-The following is our test.py file in 
+The following is our test.py file in
 
-```    
+```
 (MyMDB) [kuvivek@vivekcentos core]$ cat tests.py 
 from django.test import TestCase
 
@@ -1053,27 +953,26 @@ class MovieListPaginationTestCase(TestCase):
             response.rendered_content)
 (MyMDB) [kuvivek@vivekcentos core]$ 
 
-```    
+
+```
 
 Some interesting points with the TestCases.
 
-  a) `class MovieListPaginationTestCase(TestCase)`: `TestCase` is the base class for all Django tests. It has a number of convenient assert methods.
+a) `class MovieListPaginationTestCase(TestCase)`: `TestCase` is the base class for all Django tests. It has a number of convenient assert methods.
 
-  b) `def setUp(self)`: Like most XUnit testing frameworks, Django's TestCase
-class offers a `setUp()` hook that is run before each test. A `tearDown()` hook is also available if needed. The database is cleaned up between each test, so we
-don't need to worry about deleting any models we added.
-  
-  c) `def testFirstPage(self)`: A method is a test if its name is prefixed with test.
+b) `def setUp(self)`: Like most XUnit testing frameworks, Django's TestCase class offers a `setUp()` hook that is run before each test. A `tearDown()` hook is also available if needed. The database is cleaned up between each test, so we don't need to worry about deleting any models we added.
 
-  d) `movie_list_path = reverse('core:MovieList')`: `reverse()` is the Python equivalent of the url Django template tag. It will resolve the name into a path.
+c) `def testFirstPage(self)`: A method is a test if its name is prefixed with test.
 
-  e) `request = RequestFactory().get(path=movie_list_path)`: RequestFactory is aconvenient factory for creating fake HTTP requests. A RequestFactory has convenience methods for creating GET,POST, and PUT requests by its convenience methods named after the verb (for example, get() for GET requests). In our case, the path object provided doesn't matter, but other views may want to inspect the path of the request.
+d) `movie_list_path = reverse('core:MovieList')`: `reverse()` is the Python equivalent of the url Django template tag. It will resolve the name into a path.
 
-  f) `self.assertEqual(200, response.status_code)`: This asserts that the two arguments are equal. A response's status_code to check success or failure (200 being the status code for success - The one code you never see when you browse the web). 
+e) `request = RequestFactory().get(path=movie_list_path)`: RequestFactory is aconvenient factory for creating fake HTTP requests. A RequestFactory has convenience methods for creating GET,POST, and PUT requests by its convenience methods named after the verb (for example, get() for GET requests). In our case, the path object provided doesn't matter, but other views may want to inspect the path of the request.
 
-  g) `self.assertTrue(response.context_data['is_paginated'])`: This asserts that the argument evaluates to True. response exposes the context that is used in rendering the template. This makes finding bugs much easier as you can quickly check actual values used in rendering.
+f) `self.assertEqual(200, response.status_code)`: This asserts that the two arguments are equal. A response's status_code to check success or failure (200 being the status code for success - The one code you never see when you browse the web).
 
-  h) `self.assertInHTML(` : `assertInHTML` is one of the many convenient methods that Django provides as part of its Batteries Included philosophy. Given a valid HTML string `needle` and valid HTML string `haystack`, it will assert that `needle` is in `haystack`.
+g) `self.assertTrue(response.context_data['is_paginated'])`: This asserts that the argument evaluates to True. response exposes the context that is used in rendering the template. This makes finding bugs much easier as you can quickly check actual values used in rendering.
+
+h) `self.assertInHTML(` : `assertInHTML` is one of the many convenient methods that Django provides as part of its Batteries Included philosophy. Given a valid HTML string `needle` and valid HTML string `haystack`, it will assert that `needle` is in `haystack`.
 
 To run the tests, we can use `manage.py`.
 
@@ -1096,10 +995,10 @@ Ran 1 test in 0.031s
 FAILED (failures=1)
 Destroying test database for alias 'default'...
 (MyMDB) [kuvivek@vivekcentos django]$ 
+
 ```
 
-It failed. May be in one page all the movie details are able to adjust. In order to simulate the pagination, Lets force the list view to display two movies per page.
-In order to achieve the same. Lets add the following attribute in the class MovieList
+It failed. May be in one page all the movie details are able to adjust. In order to simulate the pagination, Lets force the list view to display two movies per page. In order to achieve the same. Lets add the following attribute in the class MovieList
 
 ```
 (MyMDB) [kuvivek@vivekcentos core]$ git diff --color views.py
@@ -1117,9 +1016,11 @@ index ae76eb3..6e4d832 100644
      model = Movie
 (MyMDB) [kuvivek@vivekcentos core]$ 
 
+
 ```
 
 Running the test once again.
+
 ```
 (MyMDB) [kuvivek@vivekcentos django]$ 
 (MyMDB) [kuvivek@vivekcentos django]$ python manage.py test
@@ -1132,90 +1033,87 @@ Ran 1 test in 0.047s
 OK
 Destroying test database for alias 'default'...
 (MyMDB) [kuvivek@vivekcentos django]$
+
 ```
 
 This time it successfully passed.
 
+24.  Adding Person and model relationships.
 
-24. Adding Person and model relationships.
+In this section, we will add relationships between models to this project. People's relationship to movies can create a complex data model. The same person can be the actor, writer, and director (for example, The Apostle (1997) written, directed, and starring Robert Duvall). Even leaving out the crew and production teams and simplifying a bit, the data model will involve a one-to-many relationship using a `ForeignKey` field, a many-to-many relationship using a `ManyToManyField`, and a class that adds extra information about a many-to-many relationship using a through class in a `ManyToManyField`.
 
-In this section, we will add relationships between models to this project. People's relationship to movies can create a complex data model. The same person can be the actor, writer,
-and director (for example, The Apostle (1997) written, directed, and starring Robert Duvall). Even leaving out the crew and production teams and simplifying a bit, the data model will 
-involve a one-to-many relationship using a `ForeignKey` field, a many-to-many relationship using a `ManyToManyField`, and a class that adds extra information about a many-to-many 
-relationship using a through class in a `ManyToManyField`.
+Lets create the following steps:
 
-   Lets create the following steps:
-   1. Create a Person model.
-   2. Add a `ForeignKey` field from `Movie` to `Person` to track the director.
-   3. Add a `ManyToManyField` from `Movie` to `Person` to track the writers.
-   4. Add a `ManyToManyField` with a through class(Actor) to track, who performed and in what role in a Movie.
-   5. Create the migration.
-   6. Add the director, writer, and actors to the movie details template.
-   7. Add a `PersonalDetail` view to the list that indicates what movie a Person has directed, written, and performed in.
-
-25. Adding a model with relationships.
+1.  Create a Person model.
+    
+2.  Add a `ForeignKey` field from `Movie` to `Person` to track the director.
+    
+3.  Add a `ManyToManyField` from `Movie` to `Person` to track the writers.
+    
+4.  Add a `ManyToManyField` with a through class(Actor) to track, who performed and in what role in a Movie.
+    
+5.  Create the migration.
+    
+6.  Add the director, writer, and actors to the movie details template.
+    
+7.  Add a `PersonalDetail` view to the list that indicates what movie a Person has directed, written, and performed in.
+    
+8.  Adding a model with relationships.
+    
 
 First, we need a person class to describe and store a person involved in a movie.
 
-[kuvivek@mycentos core]$ git diff models.py
-diff --git a/django/core/models.py b/django/core/models.py
-index 468bdcf..11e3f33 100644
---- a/django/core/models.py
-+++ b/django/core/models.py
-@@ -1,5 +1,20 @@
- from django.db import models
- 
-+
-+class Person(models.Model):
-+    first_name = models.CharField(max_length=140)
-+    last_name = models.CharField(max_length=140)
-+    born = models.DateField()
-+    died = models.DateField(null=True, blank=True)
-+
-+    class Meta:
-+        ordering = ('last_name', 'first_name')
-+
-+    def __str__(self):
-+        if self.died:
-+            return '{}, {} ({}-{})'.format(self.last_name, self.first_name, self.born, self.died)
-+        return '{}, {} ({})'.format(self.last_name, self.first_name, self.born)
-+
+    [kuvivek@mycentos core]$ git diff models.py diff --git a/djangodiff --git a/django/core/models.py b/django/core/models.py
+    index 468bdcf..a3fb8c3 100644
+    --- a/django/core/models.py
+    +++ b/django/core/models.py
+    @@ -1,5 +1,23 @@
+     from django.db import models
+     
+    +
+    +
+    +class Person(models.Model):
+    +    first_name = models.CharField(
+    +        max_length=140)
+    +    last_name = models.CharField(
+    +        max_length=140)
+    +    born = models.DateField()
+    +    died = models.DateField(null=True, blank=True)
+    +
+    +    class Meta:
+    +        ordering = ('last_name', 'first_name')
+    +
+    +    def __str__(self):
+    +        if self.died:
+    +            return '{}, {} ({}-{})'.format(self.last_name, self.first_name, self.born, self.died)
+    +        return '{}, {} ({})'.format(self.last_name, self.first_name, self.born)
+    +
+     class Movie(models.Model):
+     
+         NOT_RATED = 0
+    @@ -18,6 +36,9 @@ class Movie(models.Model):
+         rating = models.IntegerField(choices = RATINGS, default = NOT_RATED)
+         runtime = models.PositiveIntegerField()
+         website = models.URLField(blank = True)
+    +    director = models.ForeignKey(to='Person', null=True, on_delete=models.SET_NULL, related_name='directed', blank=True)
+    +    writers = models.ManyToManyField(to='Person', related_name='writing_credits', blank=True)
+    +    actors = models.ManyToManyField(to='Person', through='Role', related_name='acting_credits', blank=True)
+     
+         class Meta:
+             ordering = ('-year', 'title')
 
-In `Person` , we also see a new field (`DateField`) and a new parameter for fields (null).
-`DateField` is used for tracking date-based data, using the appropriate column type on the
-database (`date` on Postgres) and `datetime.date` in Python. Django also offers a
-`DateTimeField` to store the date and time.
+    ```
+    
 
-All fields support the null parameter (`False` by default), which indicates whether the
-column should accept `NULL` SQL values (represented by `None` in Python). We mark `died` as
-supporting `null` so that we can record people as living or dead. Then, in
-the `__str__()` method we print out a different string representation if someone is alive or
-dead.
+In `Person` , we also see a new field (`DateField`) and a new parameter for fields (null). `DateField` is used for tracking date-based data, using the appropriate column type on the database (`date` on Postgres) and `datetime.date` in Python. Django also offers a `DateTimeField` to store the date and time.
+
+All fields support the null parameter (`False` by default), which indicates whether the column should accept `NULL` SQL values (represented by `None` in Python). We mark `died` as supporting `null` so that we can record people as living or dead. Then, in the `__str__()` method we print out a different string representation if someone is alive or dead.
 
 We now have the `Person` model that can have various relationships with `Movies`.
 
 Different types of relationship fields
 
-Django's ORM has support for fields that map relationships between models, including
-one-to-many, many-to-many, and many-to-many with an intermediary model.
-When two models have a one-to-many relationship, we use a `ForeignKey` field, which will
-create a column with a Foreign Key (FK) constraint (assuming that there is database
-support) between the two tables. In the model without the `ForeignKey` field, Django will
-automatically add a `RelatedManager` object as an instance attribute.
+Django's ORM has support for fields that map relationships between models, including one-to-many, many-to-many, and many-to-many with an intermediary model. When two models have a one-to-many relationship, we use a `ForeignKey` field, which will create a column with a Foreign Key (FK) constraint (assuming that there is database support) between the two tables. In the model without the `ForeignKey` field, Django will automatically add a `RelatedManager` object as an instance attribute.
 
-The `RelatedManager` class makes it easier to query for objects in a relationship. We'll take
-a look at examples of this in the following sections.
-When two models have a many-to-many relationship, either (but not both) of them can get
-the `ManyToManyField()`; Django will create a `RelatedManager` on the other side for you.
-As you may know, relational databases cannot actually have a many-to-many relationship
-between two tables. Rather, relational databases require a bridging table with foreign keys to
-each of related tables. Assuming that we don't want to add any attributes describing the
-relationship, Django will create and manage this bridging table for us automatically.
-Sometimes, we want extra fields to describe a many-to-many relationship (for example,
-when it started or ended); for that, we can provide a `ManyToManyField` with a
-`through` model (sometimes called an association class in UML/OO). This model will have a
-`ForeignKey` to each side of the relationship and any extra fields we want.
-We'll create an example of each of these, as we go along adding directors, writers, and
-actors into our `Movie` model.
-
+The `RelatedManager` class makes it easier to query for objects in a relationship. We'll take a look at examples of this in the following sections. When two models have a many-to-many relationship, either (but not both) of them can get the `ManyToManyField()`; Django will create a `RelatedManager` on the other side for you. As you may know, relational databases cannot actually have a many-to-many relationship between two tables. Rather, relational databases require a bridging table with foreign keys to each of related tables. Assuming that we don't want to add any attributes describing the relationship, Django will create and manage this bridging table for us automatically. Sometimes, we want extra fields to describe a many-to-many relationship (for example, when it started or ended); for that, we can provide a `ManyToManyField` with a `through` model (sometimes called an association class in UML/OO). This model will have a `ForeignKey` to each side of the relationship and any extra fields we want. We'll create an example of each of these, as we go along adding directors, writers, and actors into our `Movie` model.
 
